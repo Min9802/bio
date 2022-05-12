@@ -11,14 +11,17 @@ import {
   Stack,
   IconButton,
   Grid,
-  Zoom,
+  Skeleton,
   Grow,
 } from "@mui/material";
+
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {} from "react-icons/fa";
 import LogoMin from "./assets/images/logo192.png";
 import listRoutes from "./routes";
+
+import "./sass/app.scss";
 
 const routes = listRoutes.map((route) => ({
   name: route.name,
@@ -42,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
-  card: {
+  cardload: {
     marginTop: "10%",
     minWidth: 400,
     maxWidth: 400,
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GridItem({ classes, btnTrans }) {
+function GridItem({ classes, btnTrans, isLoading }) {
   return (
     <>
       <Grow
@@ -64,9 +67,12 @@ function GridItem({ classes, btnTrans }) {
         {...(btnTrans ? { timeout: 1000 } : {})}
       >
         <Stack spacing={2}>
-          {routes.map((route, key) => (
+          {isLoading ? (
+            <Skeleton width="100%">
+              <Typography>.</Typography>
+            </Skeleton>
+          ) : routes.map((route) => (
             <Button
-              key={key}
               variant="outlined"
               className={classes.paper}
               href={route.path}
@@ -84,31 +90,63 @@ const App = () => {
   const classes = useStyles();
   const [cardTrans, setCardtrans] = useState(false);
   const [btnTrans, setBtntrans] = useState(false);
-  useEffect(()=>{
-    setTimeout(
-      setCardtrans(true), 
-      3000,
-      setBtntrans(true)
-    );
-  })
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    setTimeout(setCardtrans(true), 3000, setBtntrans(true));
+  });
   return (
     <Container fixed className={classes.container}>
       <Box className={classes.box_card}>
         <Grid container justifyContent="center" alignItems="center">
-        <Card className={classes.card}>
-              <CardHeader
-                avatar={<Avatar alt="Min" aria-label="recipe" src={LogoMin} />}
-                action={<IconButton aria-label="settings"></IconButton>}
-                title="Bio Min"
-                subheader={'"a smile here"'}
-              />
-              <CardContent className={classes.cardbody}>
-                <Typography>
-                  <GridItem classes={classes.Button_bio} btnTrans = {btnTrans} />
-                </Typography>
-              </CardContent>
-              <CardActions></CardActions>
-            </Card>
+          <Card className={classes.cardload}>
+            <CardHeader
+              avatar={
+                isLoading ? (
+                  <Skeleton
+                    animation="wave"
+                    variant="circular"
+                    width={40}
+                    height={40}
+                  />
+                ) : (
+                  <Avatar alt="Min" aria-label="recipe" src={LogoMin} />
+                )
+              }
+              action={
+                isLoading ? null : (
+                  <IconButton aria-label="settings"></IconButton>
+                )
+              }
+              title={
+                isLoading ? (
+                  <Skeleton width="100%">
+                    <Typography>.</Typography>
+                  </Skeleton>
+                ) : (
+                  "Bio Min"
+                )
+              }
+              subheader={
+                isLoading ? (
+                  <Skeleton width="100%">
+                    <Typography>.</Typography>
+                  </Skeleton>
+                ) : (
+                  '"a smile here"'
+                )
+              }
+            />
+            <CardContent className={classes.cardbody}>
+              <Typography>
+                <GridItem classes={classes.Button_bio} btnTrans={btnTrans} isLoading={isLoading} />
+              </Typography>
+            </CardContent>
+            <CardActions></CardActions>
+          </Card>
         </Grid>
       </Box>
     </Container>
