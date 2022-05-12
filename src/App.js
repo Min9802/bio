@@ -29,6 +29,8 @@ const routes = listRoutes.map((route) => ({
   icon: route.icon,
 }));
 const checked = true;
+const routeCount = listRoutes.length;
+
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: "50px",
@@ -67,20 +69,22 @@ function GridItem({ classes, btnTrans, isLoading }) {
         {...(btnTrans ? { timeout: 1000 } : {})}
       >
         <Stack spacing={2}>
-          {isLoading ? (
-            <Skeleton width="100%">
-              <Typography>.</Typography>
-            </Skeleton>
-          ) : routes.map((route) => (
-            <Button
-              variant="outlined"
-              className={classes.paper}
-              href={route.path}
-            >
-              {route.icon}
-              {route.name}
-            </Button>
-          ))}
+          {isLoading
+            ? routes.map((route) => (
+                <Skeleton width="100%">
+                  <Typography>.</Typography>
+                </Skeleton>
+              ))
+            : routes.map((route) => (
+                <Button
+                  variant="outlined"
+                  className={classes.paper}
+                  href={route.path}
+                >
+                  {route.icon}
+                  {route.name}
+                </Button>
+              ))}
         </Stack>
       </Grow>
     </>
@@ -142,7 +146,11 @@ const App = () => {
             />
             <CardContent className={classes.cardbody}>
               <Typography>
-                <GridItem classes={classes.Button_bio} btnTrans={btnTrans} isLoading={isLoading} />
+                <GridItem
+                  classes={classes.Button_bio}
+                  btnTrans={btnTrans}
+                  isLoading={isLoading}
+                />
               </Typography>
             </CardContent>
             <CardActions></CardActions>
