@@ -17,7 +17,7 @@ import {
   Alert,
   AlertTitle,
 } from "@mui/material";
-
+import { Close } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { FaBullseye } from "react-icons/fa";
@@ -25,6 +25,7 @@ import LogoMin from "./assets/images/logo192.png";
 import listRoutes from "./routes";
 
 import "./sass/app.scss";
+import { Collapse } from "@material-ui/core";
 
 const routes = listRoutes.map((route) => ({
   name: route.name,
@@ -59,8 +60,8 @@ const useStyles = makeStyles((theme) => ({
   },
   cardload: {
     marginTop: "5%",
-    minWidth: 400,
-    maxWidth: 400,
+    minWidth: 300,
+    maxWidth: 300,
     minHeight: 300,
     marginBottom: "10%",
     background: "linear-gradient(to right, #da22ff, #9733ee)",
@@ -125,22 +126,34 @@ const App = () => {
   });
   return (
     <Container fixed className={classes.container}>
-      <Stack>
-        {isLoading === false && alert ? (
+      {isLoading === false && alert ? (
+        <Collapse in={alert}>
           <Alert
             className={classes.alert}
             icon={<FaBullseye fontSize="inherit" />}
             severity="info"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setAlert(false);
+                }}
+              >
+                <Close />
+              </IconButton>
+            }
           >
             <AlertTitle>Info</AlertTitle>
             Welcome to Min !
           </Alert>
-        ) : (
-          <Skeleton width="100%">
-            <Typography>.</Typography>
-          </Skeleton>
-        )}
-      </Stack>
+        </Collapse>
+      ) : (
+        <Skeleton width="100%">
+          <Typography>.</Typography>
+        </Skeleton>
+      )}
       <Zoom
         in={cardTrans}
         style={{ transitionDelay: cardTrans ? "500ms" : "0ms" }}
