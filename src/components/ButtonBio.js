@@ -1,7 +1,17 @@
 import React from "react";
 import { Button, Typography, Stack, Skeleton, Grow } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
 
-const ButtonBio = ({ classes, btnTrans, isLoading, routes }) => {
+const useStyles = makeStyles((theme) => ({
+  btnBio: {
+    fontWeight: "bold",
+    fontSize: "",
+    fontFamily: "Roboto",
+    textTransform: "uppercase",
+  },
+}));
+const ButtonBio = ({ btnTrans, isLoading, routes }) => {
+  const classes = useStyles();
   return (
     <Grow
       in={btnTrans}
@@ -25,7 +35,7 @@ const ButtonBio = ({ classes, btnTrans, isLoading, routes }) => {
                 key={key}
                 startIcon={route.icon}
                 variant="outlined"
-                className={classes}
+                className={classes.btnBio}
                 href={route.path}
               >
                 {route.name}

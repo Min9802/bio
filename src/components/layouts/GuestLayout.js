@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Avatar, Card, Container, Grid, Skeleton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AlertMsg from "./AlertMsg";
 import FixedBottomNavigation from "./footerNav";
 import MiniDrawer from "./MiniDrawer";
@@ -56,6 +56,8 @@ const GuestLayout = ({ children, card_info }) => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(true);
   const [alert, setAlert] = useState(false);
+  const [cardInfo, setCardInfo] = useState(false);
+  // response
   const isDesktop = useMediaQuery({
     query: "(min-width: 1224px)",
   });
@@ -63,15 +65,21 @@ const GuestLayout = ({ children, card_info }) => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
   const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
+  //end
+
+  const ChirenPages = React.cloneElement(children, {
+    setAlert,
+    setCardInfo,
+  });
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-    setTimeout(() => {
-      setAlert(children.props.alert_show);
-    }, 1500);
   });
-  console.log(alert);
+  useCallback(() => {
+    setAlert(alert);
+  });
   return (
     <MiniDrawer>
       {alert ? (
@@ -99,13 +107,7 @@ const GuestLayout = ({ children, card_info }) => {
           <Card>
             <CardHeader
               avatar={
-                isLoading ? (
-                  <Avatar />
-                ) : card_info ? (
-                  card_info.avatar
-                ) : (
-                  <Avatar />
-                )
+                isLoading ? <Avatar /> : cardInfo ? cardInfo.avatar : <Avatar />
               }
               title={
                 isLoading ? (
@@ -113,7 +115,7 @@ const GuestLayout = ({ children, card_info }) => {
                     <Typography>.</Typography>
                   </Skeleton>
                 ) : (
-                  <>{card_info ? card_info.title : null}</>
+                  <>{cardInfo ? cardInfo.title : null}</>
                 )
               }
             ></CardHeader>
@@ -128,7 +130,7 @@ const GuestLayout = ({ children, card_info }) => {
                   </Grid>
                 </Skeleton>
               ) : (
-                <>{children}</>
+                <>{ChirenPages}</>
               )}
             </CardContent>
             <CardActions></CardActions>

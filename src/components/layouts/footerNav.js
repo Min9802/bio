@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
-import { Restore, Favorite, Archive } from "@mui/icons-material";
+import { Restore, Favorite } from "@mui/icons-material";
 
 import Paper from "@mui/material/Paper";
-import Logo from "../../assets/images/logo192.png";
+
 export default function FixedBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const ref = React.useRef(null);

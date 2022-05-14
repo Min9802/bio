@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 import { Alert, AlertTitle, IconButton } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,16 @@ const useStyles = makeStyles((theme) => ({
     top: 75,
   },
 }));
+/**
+ *
+ * Properties:
+ *
+ * - Icon: Icon
+ * - severity: 'error' | 'info' | 'success' | 'warning' | 'string'
+ * - variant: 'outlined' | 'filled' | 'standard' | 'string'
+ * - action: node
+ *
+ */
 const AlertMsg = (prop) => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -21,7 +31,6 @@ const AlertMsg = (prop) => {
 
   const classes = useStyles();
   const [alert, setAlert] = useState(prop.alert);
-
   return (
     <>
       {alert ? (
