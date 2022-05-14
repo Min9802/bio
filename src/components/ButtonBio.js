@@ -10,39 +10,51 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "uppercase",
   },
 }));
+
 const ButtonBio = ({ btnTrans, isLoading, routes }) => {
   const classes = useStyles();
   return (
-    <Grow
-      in={btnTrans}
-      style={{ transformOrigin: "0 0 0" }}
-      {...(btnTrans ? { timeout: 1000 } : {})}
-    >
-      <Stack spacing={2}>
-        {isLoading
-          ? routes.map((route, key) => (
-              <Skeleton key={key} width="100%">
-                <Typography key={key}>.</Typography>
-              </Skeleton>
-            ))
-          : routes.map((route, key) => (
-              <Button
-                style={{
-                  border: "solid 1px",
-                  borderRadius: "50px",
-                  textAlign: "left",
-                }}
-                key={key}
-                startIcon={route.icon}
-                variant="outlined"
-                className={classes.btnBio}
-                href={route.path}
-              >
-                {route.name}
-              </Button>
-            ))}
-      </Stack>
-    </Grow>
+    // <Grow
+    //   in={btnTrans}
+    //   style={{ transformOrigin: "0 0 0" }}
+    //   {...(btnTrans ? { timeout: 1000 } : {})}
+    // >
+
+    // </Grow>
+    <Stack spacing={2}>
+      {isLoading
+        ? routes.map((route, key) => (
+            <Skeleton key={key} width="100%">
+              <Typography key={key}>.</Typography>
+            </Skeleton>
+          ))
+        : routes.map((route, key) => (
+            <Button
+              style={{
+                border: "solid 1px",
+                borderRadius: "50px",
+                textAlign: "left",
+              }}
+              key={key}
+              startIcon={route.icon}
+              variant="outlined"
+              href={route.path}
+              className={`fadeIn ${
+                key == 1
+                  ? "first"
+                  : key == 2
+                  ? "second"
+                  : key == 3
+                  ? "third"
+                  : key == 4
+                  ? "fourth"
+                  : ""
+              }`}
+            >
+              {route.name}
+            </Button>
+          ))}
+    </Stack>
   );
 };
 

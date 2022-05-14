@@ -1,32 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
+
+import { Typography, MenuItem, Menu } from "@mui/material";
 
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import Drawers from "./patials/Drawers";
 import { NavLink } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+
+import {
+  FaUserCircle,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUserEdit,
+  FaWallet,
+} from "react-icons/fa";
+import { ListItemIcon, ListItemText } from "@material-ui/core";
 
 const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  sidenav_navlink: {
-    textDecoration: "none",
-  },
-  textsidebar: {
-    fontWeight: "bold",
-    fontSize: "",
-    fontFamily: "Roboto",
-    textTransform: "uppercase",
-  },
-}));
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -93,10 +93,29 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+//style
+const useStyles = makeStyles((theme) => ({
+  sidenav_navlink: {
+    textDecoration: "none",
+  },
+  textsidebar: {
+    fontWeight: "bold",
+    fontSize: "",
+    fontFamily: "Roboto",
+    textTransform: "uppercase",
+  },
+  authButton: {
+    position: "absolute",
+    right: 0,
+  },
+}));
+
 export default function MiniDrawer(prop) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [auth, setAuth] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,6 +123,14 @@ export default function MiniDrawer(prop) {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
   return (
     <Box sx={{ display: "flex" }}>
@@ -133,6 +160,62 @@ export default function MiniDrawer(prop) {
               Min
             </Typography>
           </NavLink>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+            style={{ position: "absolute", right: 20 }}
+          >
+            <FaUserCircle />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {auth ? (
+              <>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <FaUserEdit />
+                  </ListItemIcon>
+                  <ListItemText>Profile</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <FaWallet />
+                  </ListItemIcon>
+                  <ListItemText>Wallet</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon>
+                    <FaSignOutAlt />
+                  </ListItemIcon>
+                  <ListItemText>Logout</ListItemText>
+                </MenuItem>
+              </>
+            ) : (
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <FaSignInAlt />
+                </ListItemIcon>
+                <ListItemText>Login</ListItemText>
+              </MenuItem>
+            )}
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawers

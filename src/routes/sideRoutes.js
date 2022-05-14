@@ -1,6 +1,8 @@
 import React from "react";
 import { FaHome, FaInfo, FaUserCircle } from "react-icons/fa";
+import About from "../pages/About";
 import Bio from "../pages/Bio";
+import Contact from "../pages/Contact";
 import Home from "../pages/Home";
 
 const sideRoutes = [
@@ -14,13 +16,13 @@ const sideRoutes = [
     name: "Contact",
     icon: <FaUserCircle />,
     path: "/contact",
-    component: <Bio />,
+    component: <Contact />,
   },
   {
     name: "About",
     icon: <FaInfo />,
     path: "/about",
-    component: <Home />,
+    component: <About />,
   },
 ];
 

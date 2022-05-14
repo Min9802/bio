@@ -2,10 +2,9 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CssBaseline,
-  Typography,
+  Container,
 } from "@material-ui/core";
-import { Avatar, Card, Container, Grid, Skeleton } from "@mui/material";
+import { Card } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import AlertMsg from "./AlertMsg";
 import FixedBottomNavigation from "./footerNav";
@@ -13,13 +12,16 @@ import MiniDrawer from "./MiniDrawer";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMediaQuery } from "react-responsive";
 
+import CardLoading from "../isLoading/CardLoading";
+
 const useStyles = makeStyles((theme) => {
   return {
     container_big: {
-      marginTop: "7%",
+      marginTop: "5%",
       height: "100%",
       backgroundRepeat: "no-repeat",
       backgroundSize: "100%",
+      maxWidth: "100%",
     },
     container_medium: {
       marginTop: "20%",
@@ -75,7 +77,7 @@ const GuestLayout = ({ children, card_info }) => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   });
   useCallback(() => {
     setAlert(alert);
@@ -94,7 +96,6 @@ const GuestLayout = ({ children, card_info }) => {
         />
       ) : null}
       <React.Fragment>
-        <CssBaseline />
         <Container
           className={
             isDesktop
@@ -104,37 +105,18 @@ const GuestLayout = ({ children, card_info }) => {
               : classes.container
           }
         >
-          <Card>
-            <CardHeader
-              avatar={
-                isLoading ? <Avatar /> : cardInfo ? cardInfo.avatar : <Avatar />
-              }
-              title={
-                isLoading ? (
-                  <Skeleton width="100%">
-                    <Typography>.</Typography>
-                  </Skeleton>
-                ) : (
-                  <>{cardInfo ? cardInfo.title : null}</>
-                )
-              }
-            ></CardHeader>
-            <CardContent>
-              {isLoading ? (
-                <Skeleton width="100%">
-                  <Grid container wrap="nowrap" spacing={2}>
-                    <Typography>.</Typography>
-                  </Grid>
-                  <Grid container wrap="nowrap" spacing={2}>
-                    <Typography>.</Typography>
-                  </Grid>
-                </Skeleton>
-              ) : (
-                <>{ChirenPages}</>
-              )}
-            </CardContent>
-            <CardActions></CardActions>
-          </Card>
+          {isLoading ? (
+            <CardLoading />
+          ) : (
+            <Card>
+              <CardHeader
+                avatar={cardInfo.avatar}
+                title={cardInfo.title}
+              ></CardHeader>
+              <CardContent>{ChirenPages}</CardContent>
+              <CardActions>{cardInfo.actions}</CardActions>
+            </Card>
+          )}
         </Container>
       </React.Fragment>
       <FixedBottomNavigation />
